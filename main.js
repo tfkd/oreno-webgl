@@ -1,6 +1,16 @@
 var gl; // WebGL context
+var startTime;
+var program;
 
-function drawScene() {
+// animation
+var requestAnimationFrame = (function() {
+    return window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        function(callback) {window.setTimeout(callback, 1000/60);};
+})();
+
+function createProgram() {
     var fragmentShader = getShader(gl, "shader-fs");
     var vertexShader = getShader(gl, "shader-vs");
 
@@ -17,6 +27,11 @@ function drawScene() {
     }
 
     gl.useProgram(program);
+}
+
+function drawScene() {
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     var positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -39,12 +54,10 @@ function drawScene() {
     gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
 
     var timeUniformLocation = gl.getUniformLocation(program, "u_time");
-    gl.uniform1f(timeUniformLocation, 1);
+    var currentTime = (new Date()).getTime();
+    gl.uniform1f(timeUniformLocation, (currentTime - startTime)/1000);
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
@@ -112,6 +125,10 @@ function initWebGL(canvas) {
 function start() {
     var canvas = document.getElementById("glcanvas");
 
+
+    // start time
+    startTime = (new Date()).getTime();
+
     // resize canvas
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -133,6 +150,12 @@ function start() {
         // clear color buffer and depth
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        drawScene();
+        createProgram();
+
+        function animationloop() {
+            drawScene();
+            requestAnimationFrame(animationloop);
+        }
+        animationloop();
     }
 }
