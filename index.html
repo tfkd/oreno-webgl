@@ -1,5 +1,21 @@
 <!DOCTYPE html>
 <script src="main.js"></script>
+<script id="shader-vs" type="x-shader/x-vertex">
+  attribute vec4 a_position;
+
+  void main() {
+   gl_Position = a_position;
+  }
+</script>
+<script id="shader-fs" type="x-shader/x-fragment">
+  precision mediump float;
+
+  //uniform vec4 v_color;
+  
+  void main() {
+    gl_FragColor = vec4(1.0, 0.0, 0.5, 1.0);
+  }
+</script>
 <body onload="start()">
   <canvas id="glcanvas" width="640" height="480">
     This browser doesn't support <code>&lt;canvas&gt;</code>.
