@@ -104,6 +104,14 @@ function initWebGL(canvas) {
 function start() {
     var canvas = document.getElementById("glcanvas");
 
+    // resize canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', function(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
     // initialize gl context
     gl = initWebGL(canvas);
 
