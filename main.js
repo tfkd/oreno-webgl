@@ -35,6 +35,14 @@ function drawScene() {
     gl.enableVertexAttribArray(positionAttributeLocation);
     gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 
+    var resolutionUniformLocation = gl.getUniformLocation(program, "u_resolution");
+    gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+
+    var timeUniformLocation = gl.getUniformLocation(program, "u_time");
+    gl.uniform1f(timeUniformLocation, 1);
+
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
