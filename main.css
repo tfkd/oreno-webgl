@@ -4,4 +4,15 @@ body {
     width:100%;
     height:100%;
 }
-canvas { display:block; }
+textarea {
+    background: transparent;
+    color: white;
+    text-shadow: -1px -1px 0 gray, 1px -1px gray, -1px 1px gray, 1px 1px gray;
+    resize: none;
+    height: 90%;
+    width: 90%;
+    border: 0 none;
+}
+textarea:focus { outline: none; }
+#glcanvas { position: absolute; display:block; z-index: 0; }
+#fragment-shader { position: absolute; z-index: 1; }

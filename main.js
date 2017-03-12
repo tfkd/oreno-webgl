@@ -11,13 +11,10 @@ var requestAnimationFrame = (function() {
 })();
 
 function createProgram() {
-    var fragmentShader = getShader(gl, "shader-fs");
-    var vertexShader = getShader(gl, "shader-vs");
-
     // create shader program
     program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
+    gl.attachShader(program, getShader(gl, "shader-vs"));
+    gl.attachShader(program, getFragmentShader());
 
     // link program
     gl.linkProgram(program);
@@ -60,6 +57,15 @@ function drawScene() {
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
+}
+
+function getFragmentShader() {
+    var source = document.getElementById("fragment-shader").value;
+    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShader, source);
+
+    gl.compileShader(fragmentShader);
+    return fragmentShader;
 }
 
 function getShader(gl, id) {
@@ -125,7 +131,6 @@ function initWebGL(canvas) {
 function start() {
     var canvas = document.getElementById("glcanvas");
 
-
     // start time
     startTime = (new Date()).getTime();
 
@@ -153,6 +158,7 @@ function start() {
         createProgram();
 
         function animationloop() {
+            createProgram();
             drawScene();
             requestAnimationFrame(animationloop);
         }
